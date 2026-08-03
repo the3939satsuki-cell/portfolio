@@ -15,6 +15,11 @@ const { entry, num, next } = Astro.props;
 const { Content } = await render(entry);
 const d = entry.data;
 const dateStr = d.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long' });
+
+// カバー＋ギャラリーをまとめた画像リスト（ライトボックス用）
+const images = [d.cover, ...d.gallery].filter(Boolean) as string[];
+const hero = images[0];
+const rest = images.slice(1);
 ---
 <Base title={`${d.title} — GOTO SATSUKI`} description={d.summary}>
   <article>
@@ -30,13 +35,25 @@ const dateStr = d.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'lo
     </header>
 
     <div class="wrap">
-      <div class="media reveal-up">
-        {d.video
-          ? <div class="media__v"><iframe src={d.video} title={d.title} allowfullscreen loading="lazy"></iframe></div>
-          : d.cover
-            ? <img src={d.cover} alt={d.title} />
-            : <span class="media__ph label">no image — /public/works/ に画像を置いてください</span>}
-      </div>
+      {d.video ? (
+        <div class="media reveal-up"><div class="media__v"><iframe src={d.video} title={d.title} allowfullscreen loading="lazy"></iframe></div></div>
+      ) : hero ? (
+        <button class="media media--btn reveal-up" data-lb="0" aria-label={`${d.title} の画像を拡大`}>
+          <img src={hero} alt={d.title} />
+        </button>
+      ) : (
+        <div class="media reveal-up"><span class="media__ph label">no image — /public/works/ に画像を置いてください</span></div>
+      )}
+
+      {rest.length > 0 && (
+        <div class="gallery">
+          {rest.map((src, i) => (
+            <button class="gallery__item reveal-up" data-lb={i + 1} aria-label={`${d.title} の画像 ${i + 2} を拡大`}>
+              <img src={src} alt={`${d.title} ${i + 2}`} loading="lazy" />
+            </button>
+          ))}
+        </div>
+      )}
 
       {d.summary && <p class="lead sum reveal-up">{d.summary}</p>}
       <div class="prose reveal-up"><Content /></div>
@@ -49,6 +66,16 @@ const dateStr = d.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'lo
       </div>
     </a>
   </article>
+
+  {images.length > 0 && (
+    <div class="lightbox" id="lightbox" data-images={JSON.stringify(images)}>
+      <button class="lb__close" id="lbClose" aria-label="閉じる">✕</button>
+      <button class="lb__nav lb__prev" id="lbPrev" aria-label="前へ">←</button>
+      <img class="lb__img" id="lbImg" alt="" />
+      <button class="lb__nav lb__next" id="lbNext" aria-label="次へ">→</button>
+      <span class="lb__count label" id="lbCount"></span>
+    </div>
+  )}
 </Base>
 
 <style>
@@ -58,11 +85,17 @@ const dateStr = d.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'lo
   .title { margin: 0 0 26px; }
   .meta { display: flex; flex-wrap: wrap; gap: 24px; padding-top: 22px; border-top: 1px solid var(--line); }
 
-  .media { margin: 44px 0; aspect-ratio: 16/9; background: var(--ink); border-radius: 4px; overflow: hidden; display: grid; place-items: center; }
-  .media img { width: 100%; height: 100%; object-fit: cover; }
+  .media { margin: 44px 0; aspect-ratio: 16/9; background: var(--ink); border-radius: 4px; overflow: hidden; display: grid; place-items: center; width: 100%; }
+  .media--btn { padding: 0; border: none; cursor: pointer; }
+  .media img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .media__v { width: 100%; height: 100%; }
   .media__v iframe { width: 100%; height: 100%; border: 0; }
   .media__ph { color: #6a675e; text-align: center; padding: 0 24px; }
+
+  .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 48px; }
+  .gallery__item { padding: 0; border: none; cursor: pointer; background: var(--ink); border-radius: 4px; overflow: hidden; aspect-ratio: 4/3; }
+  .gallery__item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+  .gallery__item:hover img { transform: scale(1.05); }
 
   .sum { max-width: 40ch; margin: 0 auto 36px; font-size: 18px; color: var(--ink); }
   .prose { max-width: 62ch; margin-inline: auto; color: #33322d; font-size: 17px; line-height: 1.9; padding-bottom: 40px; }
@@ -73,4 +106,45 @@ const dateStr = d.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'lo
   .next { display: block; padding-block: clamp(56px, 10vh, 110px); border-top: 1px solid var(--line); }
   .next__title { display: block; margin-top: 12px; transition: color .3s var(--ease); }
   .next:hover .next__title { color: var(--accent); }
+
+  /* lightbox */
+  .lightbox { position: fixed; inset: 0; z-index: 60; background: rgba(12,12,10,.94); display: none; align-items: center; justify-content: center; }
+  .lightbox.open { display: flex; }
+  .lb__img { max-width: 88vw; max-height: 84vh; object-fit: contain; border-radius: 4px; }
+  .lb__nav, .lb__close { position: fixed; background: none; border: 1px solid rgba(255,255,255,.35); color: #fff; cursor: pointer; width: 52px; height: 52px; border-radius: 50%; font-size: 20px; display: grid; place-items: center; transition: background .2s, border-color .2s; }
+  .lb__nav:hover, .lb__close:hover { background: var(--accent); border-color: var(--accent); }
+  .lb__prev { left: 3vw; top: 50%; transform: translateY(-50%); }
+  .lb__next { right: 3vw; top: 50%; transform: translateY(-50%); }
+  .lb__close { top: 24px; right: 24px; }
+  .lb__count { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%); color: #fff; }
+  @media (max-width: 560px) { .lb__prev { left: 10px; } .lb__next { right: 10px; } }
 </style>
+
+<script>
+  const lb = document.getElementById('lightbox');
+  if (lb) {
+    const imgs: string[] = JSON.parse(lb.dataset.images || '[]');
+    const lbImg = document.getElementById('lbImg') as HTMLImageElement;
+    const counter = document.getElementById('lbCount') as HTMLElement;
+    let idx = 0;
+    const update = () => { lbImg.src = imgs[idx]; counter.textContent = `${idx + 1} / ${imgs.length}`; };
+    const open = (i: number) => { idx = i; update(); lb.classList.add('open'); document.body.style.overflow = 'hidden'; };
+    const close = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
+    const next = () => { idx = (idx + 1) % imgs.length; update(); };
+    const prev = () => { idx = (idx - 1 + imgs.length) % imgs.length; update(); };
+
+    document.querySelectorAll<HTMLElement>('[data-lb]').forEach((el) => {
+      el.addEventListener('click', () => open(parseInt(el.dataset.lb || '0', 10)));
+    });
+    document.getElementById('lbNext')?.addEventListener('click', (e) => { e.stopPropagation(); next(); });
+    document.getElementById('lbPrev')?.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+    document.getElementById('lbClose')?.addEventListener('click', close);
+    lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+    window.addEventListener('keydown', (e) => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') next();
+      else if (e.key === 'ArrowLeft') prev();
+    });
+  }
+</script>

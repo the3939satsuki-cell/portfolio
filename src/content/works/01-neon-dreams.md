@@ -4,7 +4,11 @@ date: 2026-06-10
 category: イラスト
 tags: [キャラデザ, ネオン]
 summary: 夜の街を舞台にしたキャラクターイラストシリーズ。
-cover: /works/01.jpg
+cover: /works/p1.svg
+gallery:
+  - /works/p2.svg
+  - /works/p3.svg
+  - /works/p4.svg
 featured: true
 order: 1
 ---

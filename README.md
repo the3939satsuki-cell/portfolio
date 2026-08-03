@@ -35,6 +35,9 @@ category: イラスト          # 一覧の絞り込みタブに自動で追加�
 tags: [キャラデザ, 水彩]
 summary: 一覧と詳細に出る短い説明。
 cover: /works/05.jpg        # public/works/ に画像を置く。無ければ省略でOK
+gallery:                    # 詳細ページに複数枚並べたいとき（クリックで拡大表示）
+  - /works/05-a.jpg
+  - /works/05-b.jpg
 video: https://www.youtube.com/embed/xxxx   # 動画作品のときだけ
 featured: true              # トップの代表作に出すなら true
 order: 5                    # 並び順（小さいほど先。同じなら日付順）

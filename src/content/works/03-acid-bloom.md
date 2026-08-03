@@ -4,7 +4,10 @@ date: 2026-03-18
 category: イラスト
 tags: [植物, 実験]
 summary: 酸性色の花をモチーフにしたビジュアル。
-cover: /works/03.jpg
+cover: /works/p3.svg
+gallery:
+  - /works/p1.svg
+  - /works/p4.svg
 featured: true
 order: 3
 ---

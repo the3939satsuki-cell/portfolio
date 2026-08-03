@@ -12,6 +12,7 @@ const works = defineCollection({
     tags: z.array(z.string()).default([]),
     summary: z.string().optional(),  // 一覧・詳細に出る短い説明
     cover: z.string().optional(),    // /public 配下の画像パス 例: '/works/01.jpg'
+    gallery: z.array(z.string()).default([]), // 詳細ページに並べる複数画像 例: ['/works/01-a.jpg','/works/01-b.jpg']
     video: z.string().optional(),    // 動画作品のとき YouTube/Vimeo の埋め込みURL
     featured: z.boolean().default(false), // トップの代表作に出すか
     order: z.number().default(0),    // 並び順（小さいほど先。0なら日付順）
