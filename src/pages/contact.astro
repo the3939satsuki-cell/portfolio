@@ -3,28 +3,26 @@ import Base from '../layouts/Base.astro';
 
 const email = 'hello@satsuki.studio';
 const channels = [
-  { label: 'INSTAGRAM', handle: '@satsuki', href: 'https://instagram.com/' },
-  { label: 'X (TWITTER)', handle: '@satsuki', href: 'https://x.com/' },
-  { label: 'BEHANCE', handle: 'satsuki', href: 'https://www.behance.net/' },
+  { label: 'instagram', handle: '@satsuki', href: 'https://instagram.com/' },
+  { label: 'x (twitter)', handle: '@satsuki', href: 'https://x.com/' },
+  { label: 'behance', handle: 'satsuki', href: 'https://www.behance.net/' },
 ];
 ---
 <Base title="Contact — GOTO SATSUKI">
   <section class="wrap head">
-    <span class="label"><span class="neon">✳</span>&nbsp; GET IN TOUCH</span>
-    <h1 class="display hero">
-      SAY<br /><span class="neon">HELLO.</span>
-    </h1>
-    <p class="lead">お仕事のご相談・ご依頼はメール、または各SNSのDMからお気軽にどうぞ。</p>
+    <span class="label">Get in touch</span>
+    <h1 class="display display--xl title">say <span class="accent">hello.</span></h1>
+    <p class="lead sub">お仕事のご相談・ご依頼はメール、または各SNSのDMからお気軽にどうぞ。</p>
   </section>
 
-  <section class="wrap section">
-    <a class="mail mono link-underline" href={`mailto:${email}`}>{email} ↗</a>
+  <section class="wrap section reveal-up">
+    <a class="mail display display--sm ul" href={`mailto:${email}`}>{email}</a>
     <ul class="channels">
       {channels.map((c) => (
         <li>
-          <a class="ch" href={c.href} target="_blank" rel="noopener">
-            <span class="ch__label label">{c.label}</span>
-            <span class="ch__handle mono">{c.handle} <span class="neon">↗</span></span>
+          <a class="ch" data-mag href={c.href} target="_blank" rel="noopener">
+            <span class="ch__label display display--sm">{c.label}</span>
+            <span class="ch__handle label">{c.handle} <span class="accent">↗</span></span>
           </a>
         </li>
       ))}
@@ -33,14 +31,14 @@ const channels = [
 </Base>
 
 <style>
-  .head { padding-block: 56px 24px; }
-  .hero { margin: 8px 0 28px; }
-  .lead { font-size: 20px; line-height: 1.6; max-width: 620px; color: #d8d8d8; }
-  .section { padding-block: 40px 96px; border-top: 2px solid var(--border); margin-top: 40px; }
-  .mail { display: inline-block; font-size: clamp(1.5rem, 4vw, 2.4rem); font-weight: 700; padding-top: 24px; }
-  .channels { list-style: none; margin-top: 56px; border-top: 2px solid var(--border); }
-  .ch { display: flex; align-items: center; justify-content: space-between; padding: 26px 0; border-bottom: 1px solid var(--border); transition: padding-left .2s; }
-  .ch:hover { padding-left: 12px; }
-  .ch__handle { font-size: 20px; font-weight: 700; }
+  .head { padding-block: clamp(140px, 22vh, 240px) 0; }
+  .title { margin: 12px 0 26px; }
+  .sub { max-width: 34ch; }
+  .section { padding-block: clamp(44px, 8vh, 90px) clamp(72px, 12vh, 150px); border-top: 1px solid var(--line); margin-top: 44px; }
+  .mail { display: inline-block; padding-top: 8px; }
+  .channels { list-style: none; margin-top: clamp(44px, 8vh, 90px); }
+  .ch { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding: clamp(22px, 4vh, 38px) 0; border-top: 1px solid var(--line); }
+  .ch__label { transition: color .3s var(--ease); text-transform: lowercase; }
+  .ch:hover .ch__label { color: var(--accent); }
   @media (max-width: 560px) { .ch { flex-direction: column; align-items: flex-start; gap: 6px; } }
 </style>

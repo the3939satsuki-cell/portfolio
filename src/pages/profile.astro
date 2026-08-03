@@ -13,29 +13,27 @@ const timeline = [
 ---
 <Base title="Profile — GOTO SATSUKI">
   <section class="wrap head">
-    <span class="label"><span class="neon">✳</span>&nbsp; ABOUT</span>
-    <h1 class="display display--md">PROFILE</h1>
+    <span class="label">About</span>
+    <h1 class="display display--xl">profile</h1>
   </section>
 
   <section class="wrap grid2">
-    <div class="bio">
-      <p class="lead">後藤颯希（さつき）。イラストとモーションを軸に活動するビジュアルアーティストです。</p>
+    <div class="bio reveal-up">
+      <p class="bio__lead">後藤颯希（さつき）。イラストとモーションを軸に活動するビジュアルアーティストです。</p>
       <p>静止画と動きの境界にあるビジュアルづくりが好きで、鮮やかな色と大胆な構図で「思わず目が留まる」表現を追いかけています。ここに自己紹介の文章を自由に書き換えてください。</p>
     </div>
-    <aside class="skills">
-      <span class="label">SKILLS</span>
-      <ul>
-        {skills.map((s) => (<li class="mono">{s}</li>))}
-      </ul>
+    <aside class="skills reveal-up">
+      <span class="label">Skills</span>
+      <ul>{skills.map((s) => (<li>{s}</li>))}</ul>
     </aside>
   </section>
 
-  <section class="wrap section">
-    <span class="label">TIMELINE</span>
+  <section class="wrap section reveal-up">
+    <span class="label">Timeline</span>
     <ul class="timeline">
       {timeline.map((t) => (
         <li class="tl">
-          <span class="tl__year neon mono">{t.year}</span>
+          <span class="tl__year display display--sm">{t.year}</span>
           <span class="tl__text">{t.text}</span>
         </li>
       ))}
@@ -44,16 +42,17 @@ const timeline = [
 </Base>
 
 <style>
-  .head { padding-block: 56px 24px; }
-  .grid2 { display: grid; grid-template-columns: 2fr 1fr; gap: 48px; padding-block: 40px 0; border-top: 2px solid var(--border); padding-top: 48px; }
-  .lead { font-size: 24px; line-height: 1.5; margin-bottom: 24px; }
-  .bio p { line-height: 1.8; color: #cfcfcf; margin-bottom: 18px; max-width: 640px; }
-  .skills ul { list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
-  .skills li { font-size: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-  .section { padding-block: 72px; }
-  .timeline { list-style: none; margin-top: 20px; }
-  .tl { display: flex; gap: 32px; padding: 24px 0; border-top: 1px solid var(--border); }
-  .tl__year { font-size: 18px; font-weight: 700; min-width: 80px; }
-  .tl__text { line-height: 1.6; color: #cfcfcf; }
+  .head { padding-block: clamp(140px, 22vh, 240px) 0; }
+  .head .display { margin-top: 12px; }
+  .grid2 { display: grid; grid-template-columns: 1.7fr 1fr; gap: clamp(40px, 6vw, 96px); padding-block: clamp(52px, 9vh, 100px); border-top: 1px solid var(--line); margin-top: 44px; }
+  .bio__lead { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.3rem, 2.4vw, 1.9rem); line-height: 1.4; letter-spacing: -0.02em; margin-bottom: 22px; }
+  .bio p { max-width: 46ch; margin-bottom: 20px; color: #4a4842; }
+  .skills ul { list-style: none; margin-top: 20px; }
+  .skills li { font-size: 16px; padding: 15px 0; border-bottom: 1px solid var(--line); color: #33322d; }
+  .section { padding-block: 0 clamp(72px, 12vh, 150px); }
+  .timeline { list-style: none; margin-top: 22px; }
+  .tl { display: flex; gap: clamp(20px, 4vw, 60px); padding: 28px 0; border-top: 1px solid var(--line); align-items: baseline; }
+  .tl__year { color: var(--accent); min-width: 120px; }
+  .tl__text { color: #33322d; }
   @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } .tl { flex-direction: column; gap: 8px; } }
 </style>

@@ -1,0 +1,16 @@
+---
+interface Props {
+  href: string;
+  num: string;
+  name: string;
+  category: string;
+  cover?: string;
+  grad: string;
+}
+const { href, num, name, category, cover, grad } = Astro.props;
+---
+<a class="work-item" href={href} data-num={num} data-grad={grad} data-cover={cover}>
+  <span class="work-item__num">{num}</span>
+  <span class="work-item__name">{name}</span>
+  <span class="work-item__cat label">{category}</span>
+</a>

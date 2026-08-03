@@ -1,77 +1,114 @@
 /* =========================================================
-   Design Tokens — Brutalist × Neon（Figmaと同じ配色）
-   色を変えたいときは、まずここだけ書き換えれば全体に反映されます。
+   Design Tokens — Light / Interactive
+   紙色の背景 × ゴシック体（Space Grotesk）× 電気ブルー。
+   色や余白はここ（:root）を触れば全ページに反映されます。
    ========================================================= */
 :root {
-  --bg: #0a0a0a;
-  --surface: #141414;
-  --border: #292929;
-  --white: #ffffff;
-  --muted: #8a8a8a;
-  --neon: #ccff00;      /* アシッドライムのアクセント */
-  --magenta: #ff2e9a;   /* 予備アクセント */
+  --paper: #f3f1ea;   /* 暖かみのある紙色 */
+  --ink: #151512;     /* near-black のインク */
+  --muted: #8b877c;   /* 補助テキスト */
+  --accent: #2f26ff;  /* 電気ブルー（アクセント） */
+  --line: rgba(20, 20, 18, 0.14);
 
-  --maxw: 1440px;
-  --pad: 48px;
+  --maxw: 1320px;
+  --pad: clamp(20px, 5vw, 60px);
 
-  --font-display: 'Anton', system-ui, sans-serif;         /* 巨大タイポ */
-  --font-mono: 'Space Mono', ui-monospace, monospace;     /* ラベル・メタ */
-  --font-body: 'Inter', system-ui, sans-serif;            /* 本文 */
+  --font-display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
 
 body {
-  background: var(--bg);
-  color: var(--white);
-  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  line-height: 1.6;
 }
-
 a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
 
 .wrap { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--pad); }
 
-/* ---- ラベル/メタ（等幅・大文字） ---- */
-.mono { font-family: var(--font-mono); letter-spacing: 0.05em; }
-.label { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-.neon { color: var(--neon); }
+/* ---- ラベル（等幅・トラッキング） ---- */
+.label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+.accent { color: var(--accent); }
 .muted { color: var(--muted); }
 
-/* ---- 巨大ディスプレイ見出し ---- */
+/* ---- ゴシックのディスプレイ見出し（小文字・詰め） ---- */
 .display {
   font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 0.9;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  font-size: clamp(3.5rem, 11vw, 11rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-transform: lowercase;
+  font-size: clamp(2.4rem, 7vw, 6rem);
 }
-.display--md { font-size: clamp(3rem, 8vw, 8rem); }
+.display--xl { font-size: clamp(2.6rem, 9vw, 7.4rem); }
+.display--sm { font-size: clamp(1.7rem, 4vw, 3rem); }
+.lead { font-size: 15px; line-height: 1.85; color: #4a4842; max-width: 46ch; }
 
-/* ---- 区切り線 ---- */
-.rule { border: none; border-top: 2px solid var(--border); }
-.rule--neon { border-top: 2px solid var(--neon); }
+.hair { border: none; border-top: 1px solid var(--line); }
+.ul { position: relative; }
+.ul::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 100%; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .45s var(--ease); }
+.ul:hover::after { transform: scaleX(1); }
 
-/* ---- ネオン下線リンク ---- */
-.link-underline { position: relative; }
-.link-underline::after {
-  content: ''; position: absolute; left: 0; bottom: -3px; width: 100%; height: 2px;
-  background: var(--neon); transform: scaleX(0); transform-origin: left; transition: transform .28s ease;
+/* ---- スクロールで立ち上がる ---- */
+.reveal-up { opacity: 0; transform: translateY(22px); transition: opacity .9s var(--ease), transform 1s var(--ease); }
+.reveal-up.in { opacity: 1; transform: none; }
+
+/* ---- 作品リスト（ホバーで画像が現れる） ---- */
+.worklist { list-style: none; }
+.work-item {
+  position: relative; display: flex; align-items: center; gap: 24px;
+  padding: clamp(20px, 3.4vh, 34px) 0; border-top: 1px solid var(--line);
+  transition: padding-left .5s var(--ease);
 }
-.link-underline:hover::after { transform: scaleX(1); }
+.work-item:last-child { border-bottom: 1px solid var(--line); }
+.work-item__num { font-family: var(--font-mono); font-size: 13px; color: var(--muted); width: 40px; flex: none; transition: color .4s var(--ease); }
+.work-item__name {
+  font-family: var(--font-display); font-weight: 500; font-size: clamp(1.9rem, 5.4vw, 4rem);
+  line-height: 1; letter-spacing: -0.03em; text-transform: lowercase;
+  transition: color .4s var(--ease);
+}
+.work-item__cat { margin-left: auto; text-align: right; white-space: nowrap; transition: color .4s var(--ease); }
+.work-item:hover { padding-left: 22px; }
+.work-item:hover .work-item__num { color: var(--accent); }
+.work-item:hover .work-item__name { color: var(--accent); }
+.work-item:hover .work-item__cat { color: var(--ink); }
 
-/* ---- マーキー（横スクロール帯） ---- */
-.marquee { overflow: hidden; border-top: 2px solid var(--neon); border-bottom: 2px solid var(--border); }
-.marquee__track { display: inline-flex; white-space: nowrap; padding: 18px 0; animation: marquee 28s linear infinite; }
-.marquee__track span { font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.08em; color: var(--muted); padding-inline: 1.2rem; }
-.marquee__track span .star { color: var(--neon); }
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+/* ---- カーソル追従の画像 ---- */
+.reveal-img {
+  position: fixed; top: 0; left: 0; z-index: 20; width: min(30vw, 340px); aspect-ratio: 4/5;
+  border-radius: 4px; pointer-events: none; opacity: 0; transform: translate(-50%, -50%) scale(.85);
+  transition: opacity .35s var(--ease), transform .5s var(--ease); overflow: hidden;
+  box-shadow: 0 30px 60px rgba(20, 20, 18, .28); background-size: cover; background-position: center;
+}
+.reveal-img.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.reveal-img__num { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 64px; mix-blend-mode: overlay; }
+
+/* ---- マーキー ---- */
+.marquee { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; }
+.marquee__t { display: inline-flex; white-space: nowrap; animation: mq 24s linear infinite; }
+.marquee__t span { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.4rem, 3vw, 2.2rem); padding-inline: 1rem; color: var(--ink); }
+.marquee__t b { color: var(--accent); font-weight: 400; }
+@keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ---- カスタムカーソル（マウス環境のみ） ---- */
+.cursor { position: fixed; top: 0; left: 0; z-index: 40; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); pointer-events: none; transform: translate(-50%, -50%); transition: width .3s var(--ease), height .3s var(--ease), background .3s var(--ease); mix-blend-mode: difference; display: none; }
+.cursor.big { width: 76px; height: 76px; background: #fff; }
+.cursor-txt { position: fixed; top: 0; left: 0; z-index: 41; pointer-events: none; transform: translate(-50%, -50%); font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); opacity: 0; transition: opacity .3s; display: none; }
+@media (pointer: fine) { body.cur .cursor, body.cur .cursor-txt { display: block; } body.cur * { cursor: none; } }
+
+[data-mag] { display: inline-block; will-change: transform; }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee__track { animation: none; }
   html { scroll-behavior: auto; }
+  .marquee__t { animation: none; }
+  .reveal-up { opacity: 1; transform: none; transition: none; }
 }

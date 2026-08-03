@@ -1,57 +1,52 @@
 ---
 import Base from '../../layouts/Base.astro';
-import WorkCard from '../../components/WorkCard.astro';
-import { getCollection } from 'astro:content';
+import WorkRow from '../../components/WorkRow.astro';
+import { getWorks } from '../../lib/works';
 
-const all = (await getCollection('works')).sort((a, b) => {
-  if (a.data.order !== b.data.order) return a.data.order - b.data.order;
-  return b.data.date.valueOf() - a.data.date.valueOf();
-});
-// カテゴリ一覧を作品から自動生成
-const categories = ['ALL', ...Array.from(new Set(all.map((w) => w.data.category)))];
+const works = await getWorks();
+const categories = ['all', ...Array.from(new Set(works.map((w) => w.entry.data.category)))];
 ---
 <Base title="Works — GOTO SATSUKI">
   <section class="wrap head">
-    <span class="label"><span class="neon">✳</span>&nbsp; INDEX</span>
-    <h1 class="display display--md">WORKS</h1>
-    <p class="label head__count">{String(all.length).padStart(2, '0')} PROJECTS / 2024—2026</p>
-  </section>
-
-  <!-- カテゴリ絞り込み -->
-  <div class="wrap filters" role="tablist">
-    {categories.map((c, i) => (
-      <button class:list={['filter mono', { 'is-active': i === 0 }]} data-filter={c}>{c}</button>
-    ))}
-  </div>
-
-  <section class="wrap section">
-    <div class="grid" id="grid">
-      {all.map((w, i) => (
-        <WorkCard
-          href={`/works/${w.id}`}
-          num={String(i + 1).padStart(2, '0')}
-          title={w.data.title}
-          category={w.data.category}
-          cover={w.data.cover}
-        />
+    <span class="label">Index — {String(works.length).padStart(2, '0')} projects</span>
+    <h1 class="display display--xl">works</h1>
+    <div class="filters" role="tablist">
+      {categories.map((c, i) => (
+        <button class:list={['filter', { 'is-active': i === 0 }]} data-filter={c}>{c}</button>
       ))}
     </div>
-    <p class="empty mono" id="empty" hidden>該当する作品がありません。</p>
+  </section>
+
+  <section class="wrap">
+    <ul class="worklist" id="list">
+      {works.map((w) => (
+        <WorkRow
+          href={`/works/${w.entry.id}`}
+          num={w.num}
+          name={w.entry.data.title}
+          category={w.entry.data.category}
+          cover={w.entry.data.cover}
+          grad={w.grad}
+        />
+      ))}
+    </ul>
+    <p class="empty lead" id="empty" hidden>該当する作品がありません。</p>
   </section>
 </Base>
 
 <script>
   const buttons = document.querySelectorAll<HTMLButtonElement>('.filter');
-  const cards = document.querySelectorAll<HTMLElement>('#grid .card');
+  const rows = document.querySelectorAll<HTMLElement>('#list .work-item');
   const empty = document.getElementById('empty');
   buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
       const f = btn.dataset.filter;
       buttons.forEach((b) => b.classList.toggle('is-active', b === btn));
       let shown = 0;
-      cards.forEach((card) => {
-        const match = f === 'ALL' || card.dataset.category === f;
-        card.style.display = match ? '' : 'none';
+      rows.forEach((row) => {
+        const cat = row.querySelector('.work-item__cat')?.textContent?.trim();
+        const match = f === 'all' || cat === f;
+        row.style.display = match ? '' : 'none';
         if (match) shown++;
       });
       if (empty) empty.hidden = shown !== 0;
@@ -60,16 +55,17 @@ const categories = ['ALL', ...Array.from(new Set(all.map((w) => w.data.category)
 </script>
 
 <style>
-  .head { padding-block: 56px 24px; }
-  .head__count { margin-top: 16px; }
-  .filters { display: flex; flex-wrap: wrap; gap: 10px; padding-bottom: 28px; border-bottom: 2px solid var(--border); }
-  .filter { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 9px 18px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: all .18s; }
-  .filter:hover { color: var(--white); border-color: var(--muted); }
-  .filter.is-active { background: var(--neon); color: #0a0a0a; border-color: var(--neon); font-weight: 700; }
-  .section { padding-block: 0 80px; }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); }
-  .grid > :global(.card) { margin: -0.5px; }
-  .empty { padding: 60px 0; color: var(--muted); }
-  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+  .head { padding-block: clamp(140px, 22vh, 240px) 0; }
+  .head .display { margin: 12px 0 36px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 24px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+  .filter {
+    background: none; border: none; cursor: pointer; padding: 0 0 12px;
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: lowercase;
+    color: var(--muted); position: relative; transition: color .3s var(--ease);
+  }
+  .filter::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 100%; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease); }
+  .filter:hover, .filter.is-active { color: var(--ink); }
+  .filter.is-active::after { transform: scaleX(1); }
+  .worklist { margin-top: 8px; padding-bottom: clamp(60px, 10vh, 120px); }
+  .empty { padding: 80px 0; }
 </style>

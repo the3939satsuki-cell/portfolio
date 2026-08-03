@@ -23,7 +23,7 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -33,5 +33,70 @@ const {
       <slot />
     </main>
     <Footer />
+
+    <div class="reveal-img" id="revealImg"><span class="reveal-img__num" id="revealNum"></span></div>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-txt" id="cursorTxt">view</div>
+
+    <script>
+      const fine = window.matchMedia('(pointer:fine)').matches;
+      const revealImg = document.getElementById('revealImg') as HTMLElement;
+      const revealNum = document.getElementById('revealNum') as HTMLElement;
+      const cursor = document.getElementById('cursor') as HTMLElement;
+      const cursorTxt = document.getElementById('cursorTxt') as HTMLElement;
+      const mouse = { x: innerWidth / 2, y: innerHeight / 2 };
+      const rev = { x: mouse.x, y: mouse.y };
+      const cur = { x: mouse.x, y: mouse.y };
+      if (fine) document.body.classList.add('cur');
+
+      window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+      // 作品ホバーで画像が現れ、カーソルに追従
+      document.querySelectorAll<HTMLElement>('.work-item').forEach((it) => {
+        it.addEventListener('mouseenter', () => {
+          const cover = it.dataset.cover;
+          revealImg.style.background = cover
+            ? `#111 url("${cover}") center/cover`
+            : (it.dataset.grad || '#111');
+          revealNum.textContent = it.dataset.num || '';
+          revealNum.style.display = cover ? 'none' : 'grid';
+          revealImg.classList.add('show');
+          cursor.classList.add('big');
+          cursorTxt.style.opacity = '1';
+        });
+        it.addEventListener('mouseleave', () => {
+          revealImg.classList.remove('show');
+          cursor.classList.remove('big');
+          cursorTxt.style.opacity = '0';
+        });
+      });
+
+      // マグネティック
+      document.querySelectorAll<HTMLElement>('[data-mag]').forEach((el) => {
+        el.addEventListener('mousemove', (e) => {
+          const r = el.getBoundingClientRect();
+          const mx = e.clientX - (r.left + r.width / 2);
+          const my = e.clientY - (r.top + r.height / 2);
+          el.style.transform = `translate(${mx * 0.4}px, ${my * 0.5}px)`;
+        });
+        el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+      });
+
+      // スクロールで立ち上がる
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+      document.querySelectorAll('.reveal-up').forEach((el) => io.observe(el));
+
+      const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
+      (function loop() {
+        rev.x = lerp(rev.x, mouse.x, 0.12); rev.y = lerp(rev.y, mouse.y, 0.12);
+        revealImg.style.left = rev.x + 'px'; revealImg.style.top = rev.y + 'px';
+        cur.x = lerp(cur.x, mouse.x, 0.25); cur.y = lerp(cur.y, mouse.y, 0.25);
+        cursor.style.left = cur.x + 'px'; cursor.style.top = cur.y + 'px';
+        cursorTxt.style.left = cur.x + 'px'; cursorTxt.style.top = cur.y + 'px';
+        requestAnimationFrame(loop);
+      })();
+    </script>
   </body>
 </html>

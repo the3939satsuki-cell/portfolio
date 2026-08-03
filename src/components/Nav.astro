@@ -1,37 +1,30 @@
 ---
-const path = Astro.url.pathname;
-const isActive = (href: string) =>
-  href === '/' ? path === '/' : path.startsWith(href);
 const links = [
-  { href: '/profile', label: 'プロフィール' },
-  { href: '/works', label: '作品' },
-  { href: '/activities', label: '課外活動' },
-  { href: '/contact', label: 'コンタクト' },
+  { href: '/works', label: 'works' },
+  { href: '/profile', label: 'profile' },
+  { href: '/activities', label: 'activities' },
+  { href: '/contact', label: 'contact' },
 ];
 ---
 <header class="nav">
   <div class="wrap nav__inner">
-    <a class="nav__logo" href="/">SATSUKI<span class="neon">®</span></a>
+    <a class="nav__brand" href="/">後藤颯希<small>SATSUKI</small></a>
     <nav class="nav__links">
-      {links.map((l) => (
-        <a
-          href={l.href}
-          class:list={['nav__link', 'link-underline', { 'is-active': isActive(l.href) }]}
-        >{l.label}</a>
-      ))}
+      {links.map((l) => (<a data-mag href={l.href}>{l.label}</a>))}
     </nav>
   </div>
 </header>
 
 <style>
-  .nav { position: sticky; top: 0; z-index: 50; background: rgba(10,10,10,0.85); backdrop-filter: blur(8px); border-bottom: 2px solid var(--border); }
-  .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
-  .nav__logo { font-family: var(--font-mono); font-weight: 700; font-size: 18px; letter-spacing: 0.04em; }
-  .nav__links { display: flex; gap: 32px; }
-  .nav__link { font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.06em; color: var(--muted); transition: color .2s; }
-  .nav__link:hover, .nav__link.is-active { color: var(--white); }
+  .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 30; color: #fff; mix-blend-mode: difference; }
+  .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+  .nav__brand { font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+  .nav__brand small { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; margin-left: 8px; }
+  .nav__links { display: flex; gap: 30px; }
+  .nav__links a { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
   @media (max-width: 640px) {
+    .nav__brand small { display: none; }
     .nav__links { gap: 16px; }
-    .nav__link { font-size: 12px; }
+    .nav__links a { font-size: 11px; }
   }
 </style>

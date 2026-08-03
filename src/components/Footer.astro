@@ -1,39 +1,28 @@
 ---
 const socials = [
-  { href: 'https://instagram.com/', label: 'INSTAGRAM' },
-  { href: 'https://x.com/', label: 'X' },
-  { href: 'https://www.behance.net/', label: 'BEHANCE' },
+  { href: 'https://instagram.com/', label: 'instagram' },
+  { href: 'https://x.com/', label: 'x' },
+  { href: 'https://www.behance.net/', label: 'behance' },
 ];
 const year = new Date().getFullYear();
 ---
 <footer class="footer">
-  <div class="wrap">
-    <div class="footer__top">
-      <span class="label neon">( CONTACT )</span>
-      <span class="label">AVAILABLE FOR WORK — {year}</span>
-    </div>
-    <a class="footer__cta" href="/contact">
-      LET'S TALK <span class="neon">↗</span>
-    </a>
-    <a class="footer__mail mono" href="mailto:hello@satsuki.studio">hello@satsuki.studio</a>
-    <div class="footer__bottom">
-      <span class="label">© {year} GOTO SATSUKI — ALL RIGHTS RESERVED</span>
+  <div class="wrap reveal-up">
+    <span class="label">Get in touch</span>
+    <a class="footer__cta display display--xl" href="/contact">let's make something <span class="accent">together.</span></a>
+    <div class="footer__row">
+      <span class="label">© {year} goto satsuki</span>
       <nav class="footer__soc">
-        {socials.map((s) => (
-          <a class="mono link-underline" href={s.href} target="_blank" rel="noopener">{s.label} ↗</a>
-        ))}
+        {socials.map((s) => (<a data-mag href={s.href} target="_blank" rel="noopener">{s.label}</a>))}
       </nav>
     </div>
   </div>
 </footer>
 
 <style>
-  .footer { padding: 72px 0 36px; border-top: 2px solid var(--border); }
-  .footer__top { display: flex; justify-content: space-between; margin-bottom: 40px; }
-  .footer__cta { display: inline-block; font-family: var(--font-display); text-transform: uppercase; line-height: 0.95; font-size: clamp(3rem, 9vw, 9rem); }
-  .footer__cta .neon { display: inline-block; transition: transform .25s ease; }
-  .footer__cta:hover .neon { transform: translate(6px, -6px); }
-  .footer__mail { display: inline-block; margin-top: 18px; font-size: 22px; font-weight: 700; }
-  .footer__bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 64px; padding-top: 26px; border-top: 2px solid var(--border); flex-wrap: wrap; }
-  .footer__soc { display: flex; gap: 26px; font-size: 13px; }
+  .footer { padding: clamp(72px, 12vh, 150px) 0 48px; }
+  .footer__cta { display: inline-block; margin: 18px 0 0; }
+  .footer__row { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .footer__soc { display: flex; gap: 26px; }
+  .footer__soc a { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
 </style>

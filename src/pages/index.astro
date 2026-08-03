@@ -1,60 +1,64 @@
 ---
 import Base from '../layouts/Base.astro';
-import Marquee from '../components/Marquee.astro';
-import WorkCard from '../components/WorkCard.astro';
-import { getCollection } from 'astro:content';
+import WorkRow from '../components/WorkRow.astro';
+import { getWorks } from '../lib/works';
 
-const all = (await getCollection('works')).sort((a, b) => {
-  if (a.data.order !== b.data.order) return a.data.order - b.data.order;
-  return b.data.date.valueOf() - a.data.date.valueOf();
-});
-const featured = all.filter((w) => w.data.featured).slice(0, 6);
-const list = featured.length ? featured : all.slice(0, 6);
+const works = await getWorks();
+const featured = works.filter((w) => w.entry.data.featured);
+const list = (featured.length ? featured : works).slice(0, 6);
 ---
 <Base>
-  <!-- HERO -->
-  <section class="hero wrap">
-    <div class="hero__meta">
-      <span class="label">GOTO SATSUKI — VISUAL ARTIST</span>
-      <span class="label">(ILLUSTRATION / MOTION)</span>
+  <header class="hero">
+    <div class="wrap">
+      <span class="label hero__eyebrow">Visual artist — portfolio 2026</span>
+      <h1 class="display display--xl hero__title">illustration<br />&amp; motion, <span class="accent">by satsuki.</span></h1>
+      <p class="lead hero__intro">静止画と動きの境界で、思わず目が留まるビジュアルを。カーソルを作品名に重ねると、作品が現れます。</p>
     </div>
-    <h1 class="display hero__headline">
-      MAKING<br />THINGS<br /><span class="neon">THAT MOVE.</span>
-    </h1>
+  </header>
+
+  <section class="works">
+    <div class="wrap">
+      <div class="works__head">
+        <span class="label">Selected works</span>
+        <span class="label">( {String(list.length).padStart(2, '0')} )</span>
+      </div>
+      <ul class="worklist">
+        {list.map((w) => (
+          <WorkRow
+            href={`/works/${w.entry.id}`}
+            num={w.num}
+            name={w.entry.data.title}
+            category={w.entry.data.category}
+            cover={w.entry.data.cover}
+            grad={w.grad}
+          />
+        ))}
+      </ul>
+      <a class="all label ul" href="/works">all works ↗</a>
+    </div>
   </section>
 
-  <Marquee />
+  <div class="marquee">
+    <div class="marquee__t">
+      <span>available for work <b>✦</b> illustration <b>✦</b> motion <b>✦</b> art direction <b>✦</b> </span>
+      <span>available for work <b>✦</b> illustration <b>✦</b> motion <b>✦</b> art direction <b>✦</b> </span>
+    </div>
+  </div>
 
-  <!-- FEATURED WORKS -->
-  <section class="wrap section">
-    <div class="section__head">
-      <span class="label"><span class="neon">✳</span>&nbsp; SELECTED INDEX</span>
-      <span class="label">{String(list.length).padStart(2, '0')} PROJECTS</span>
-    </div>
-    <div class="grid">
-      {list.map((w, i) => (
-        <WorkCard
-          href={`/works/${w.id}`}
-          num={String(i + 1).padStart(2, '0')}
-          title={w.data.title}
-          category={w.data.category}
-          cover={w.data.cover}
-        />
-      ))}
-    </div>
-    <a class="viewall mono link-underline" href="/works">VIEW ALL WORKS ↗</a>
+  <section class="wrap about reveal-up">
+    <p class="lead about__t">イラストとモーションを軸に、色と余韻でひとつの世界を立ち上げるビジュアルアーティスト。
+      <a class="ul accent" href="/profile">プロフィールを見る ↗</a></p>
   </section>
 </Base>
 
 <style>
-  .hero { padding-block: 64px 56px; }
-  .hero__meta { display: flex; justify-content: space-between; margin-bottom: 40px; }
-  .hero__headline { margin: 0; }
-  .section { padding-block: 80px; }
-  .section__head { display: flex; justify-content: space-between; align-items: center; padding: 30px 0; border-top: 2px solid var(--border); border-bottom: 2px solid var(--border); }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: -1px; }
-  .grid > :global(.card) { margin: -0.5px; }
-  .viewall { display: inline-block; margin-top: 40px; font-size: 15px; }
-  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } .hero__meta { flex-direction: column; gap: 8px; } }
+  .hero { padding: clamp(150px, 22vh, 260px) 0 clamp(56px, 9vh, 110px); }
+  .hero__eyebrow { display: block; margin-bottom: 26px; }
+  .hero__title { margin: 0; }
+  .hero__intro { margin-top: 34px; }
+  .works { padding: clamp(24px, 4vh, 60px) 0 clamp(60px, 10vh, 120px); border-top: 1px solid var(--line); }
+  .works__head { display: flex; justify-content: space-between; align-items: baseline; padding: 24px 0 6px; }
+  .all { display: inline-block; margin-top: 30px; }
+  .about { padding-block: clamp(64px, 11vh, 140px); }
+  .about__t { max-width: 32ch; }
 </style>
