@@ -1,9 +1,9 @@
 ---
-title: Kinetic Type
-date: 2026-05-02
+title: 風
+date: 2026-08-01
 category: movie
-tags: [タイポグラフィ, After Effects]
-summary: 文字が動くキネティックタイポグラフィの実験。
+tags: [タイポグラフィ, 映像]
+summary: 
 cover: /works/p2.svg
 gallery:
   - /works/p1.svg
