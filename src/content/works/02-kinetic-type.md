@@ -1,7 +1,7 @@
 ---
 title: Kinetic Type
 date: 2026-05-02
-category: モーション
+category: movie
 tags: [タイポグラフィ, After Effects]
 summary: 文字が動くキネティックタイポグラフィの実験。
 cover: /works/p2.svg

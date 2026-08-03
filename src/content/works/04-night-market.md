@@ -1,7 +1,7 @@
 ---
 title: Night Market
 date: 2026-01-22
-category: キービジュアル
+category: design
 tags: [ポスター, 背景]
 summary: イベント用に制作したキービジュアル。
 cover: /works/p4.svg

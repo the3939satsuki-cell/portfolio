@@ -1,7 +1,7 @@
 ---
 title: Neon Dreams
 date: 2026-06-10
-category: イラスト
+category: illustration
 tags: [キャラデザ, ネオン]
 summary: 夜の街を舞台にしたキャラクターイラストシリーズ。
 cover: /works/p1.svg

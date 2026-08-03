@@ -11,6 +11,10 @@ const GRADS = [
 ];
 export const grad = (i: number) => GRADS[i % GRADS.length];
 
+// 作品一覧の絞り込みカテゴリ（'all' はページ側で先頭に追加）。
+// 追加・変更したいときはこの配列を編集してください。各作品の category はここのいずれかにします。
+export const CATEGORIES = ['design', 'movie', 'illustration'];
+
 export interface WorkItem {
   entry: CollectionEntry<'works'>;
   num: string;

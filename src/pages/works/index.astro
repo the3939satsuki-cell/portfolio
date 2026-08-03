@@ -1,10 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
 import WorkRow from '../../components/WorkRow.astro';
-import { getWorks } from '../../lib/works';
+import { getWorks, CATEGORIES } from '../../lib/works';
 
 const works = await getWorks();
-const categories = ['all', ...Array.from(new Set(works.map((w) => w.entry.data.category)))];
+const categories = ['all', ...CATEGORIES];
 ---
 <Base title="Works — GOTO SATSUKI">
   <section class="wrap head">

@@ -1,7 +1,7 @@
 ---
 title: Acid Bloom
 date: 2026-03-18
-category: イラスト
+category: illustration
 tags: [植物, 実験]
 summary: 酸性色の花をモチーフにしたビジュアル。
 cover: /works/p3.svg
