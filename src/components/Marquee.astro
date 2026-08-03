@@ -1,0 +1,11 @@
+---
+interface Props { items?: string[]; }
+const { items = ['AVAILABLE FOR WORK', 'ILLUSTRATION', 'MOTION DESIGN', 'ART DIRECTION'] } = Astro.props;
+// アニメーションを途切れなく見せるため2回分並べる
+const doubled = [...items, ...items];
+---
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    {doubled.map((t) => (<span>{t}<span class="star">&nbsp;&nbsp;✦&nbsp;&nbsp;</span></span>))}
+  </div>
+</div>

@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+
+// 課外活動（サークル等）— 項目を足すだけで増やせます
+const activities = [
+  { name: 'イラストサークル', role: '主宰 / メインビジュアル担当', period: '2024—', desc: '部誌の表紙・広報物のデザインを担当。' },
+  { name: '映像制作チーム', role: 'モーション担当', period: '2025—', desc: 'イベント用のオープニング映像などを制作。' },
+  { name: '学内展示', role: '出展', period: '2025', desc: 'グループ展にイラスト作品を出展。' },
+];
+---
+<Base title="Activities — GOTO SATSUKI">
+  <section class="wrap head">
+    <span class="label"><span class="neon">✳</span>&nbsp; EXTRACURRICULAR</span>
+    <h1 class="display display--md">課外活動</h1>
+  </section>
+
+  <section class="wrap section">
+    <ul class="list">
+      {activities.map((a, i) => (
+        <li class="row">
+          <span class="row__num neon mono">{String(i + 1).padStart(2, '0')}</span>
+          <div class="row__body">
+            <div class="row__top">
+              <h2 class="row__name mono">{a.name}</h2>
+              <span class="label">{a.period}</span>
+            </div>
+            <p class="row__role label">{a.role}</p>
+            <p class="row__desc">{a.desc}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .head { padding-block: 56px 24px; }
+  .section { padding-block: 24px 80px; }
+  .list { list-style: none; border-top: 2px solid var(--border); }
+  .row { display: flex; gap: 28px; padding: 36px 0; border-bottom: 1px solid var(--border); }
+  .row__num { font-size: 16px; font-weight: 700; padding-top: 4px; }
+  .row__top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+  .row__name { font-size: 26px; font-weight: 700; }
+  .row__role { margin: 10px 0 12px; }
+  .row__desc { color: #cfcfcf; line-height: 1.7; max-width: 640px; }
+  @media (max-width: 560px) { .row { gap: 16px; } .row__top { flex-direction: column; gap: 4px; } }
+</style>

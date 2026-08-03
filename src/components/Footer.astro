@@ -1,0 +1,39 @@
+---
+const socials = [
+  { href: 'https://instagram.com/', label: 'INSTAGRAM' },
+  { href: 'https://x.com/', label: 'X' },
+  { href: 'https://www.behance.net/', label: 'BEHANCE' },
+];
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <span class="label neon">( CONTACT )</span>
+      <span class="label">AVAILABLE FOR WORK — {year}</span>
+    </div>
+    <a class="footer__cta" href="/contact">
+      LET'S TALK <span class="neon">↗</span>
+    </a>
+    <a class="footer__mail mono" href="mailto:hello@satsuki.studio">hello@satsuki.studio</a>
+    <div class="footer__bottom">
+      <span class="label">© {year} GOTO SATSUKI — ALL RIGHTS RESERVED</span>
+      <nav class="footer__soc">
+        {socials.map((s) => (
+          <a class="mono link-underline" href={s.href} target="_blank" rel="noopener">{s.label} ↗</a>
+        ))}
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { padding: 72px 0 36px; border-top: 2px solid var(--border); }
+  .footer__top { display: flex; justify-content: space-between; margin-bottom: 40px; }
+  .footer__cta { display: inline-block; font-family: var(--font-display); text-transform: uppercase; line-height: 0.95; font-size: clamp(3rem, 9vw, 9rem); }
+  .footer__cta .neon { display: inline-block; transition: transform .25s ease; }
+  .footer__cta:hover .neon { transform: translate(6px, -6px); }
+  .footer__mail { display: inline-block; margin-top: 18px; font-size: 22px; font-weight: 700; }
+  .footer__bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 64px; padding-top: 26px; border-top: 2px solid var(--border); flex-wrap: wrap; }
+  .footer__soc { display: flex; gap: 26px; font-size: 13px; }
+</style>

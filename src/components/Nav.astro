@@ -1,0 +1,37 @@
+---
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+const links = [
+  { href: '/profile', label: 'プロフィール' },
+  { href: '/works', label: '作品' },
+  { href: '/activities', label: '課外活動' },
+  { href: '/contact', label: 'コンタクト' },
+];
+---
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__logo" href="/">SATSUKI<span class="neon">®</span></a>
+    <nav class="nav__links">
+      {links.map((l) => (
+        <a
+          href={l.href}
+          class:list={['nav__link', 'link-underline', { 'is-active': isActive(l.href) }]}
+        >{l.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(10,10,10,0.85); backdrop-filter: blur(8px); border-bottom: 2px solid var(--border); }
+  .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+  .nav__logo { font-family: var(--font-mono); font-weight: 700; font-size: 18px; letter-spacing: 0.04em; }
+  .nav__links { display: flex; gap: 32px; }
+  .nav__link { font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.06em; color: var(--muted); transition: color .2s; }
+  .nav__link:hover, .nav__link.is-active { color: var(--white); }
+  @media (max-width: 640px) {
+    .nav__links { gap: 16px; }
+    .nav__link { font-size: 12px; }
+  }
+</style>

@@ -1,0 +1,77 @@
+/* =========================================================
+   Design Tokens — Brutalist × Neon（Figmaと同じ配色）
+   色を変えたいときは、まずここだけ書き換えれば全体に反映されます。
+   ========================================================= */
+:root {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --border: #292929;
+  --white: #ffffff;
+  --muted: #8a8a8a;
+  --neon: #ccff00;      /* アシッドライムのアクセント */
+  --magenta: #ff2e9a;   /* 予備アクセント */
+
+  --maxw: 1440px;
+  --pad: 48px;
+
+  --font-display: 'Anton', system-ui, sans-serif;         /* 巨大タイポ */
+  --font-mono: 'Space Mono', ui-monospace, monospace;     /* ラベル・メタ */
+  --font-body: 'Inter', system-ui, sans-serif;            /* 本文 */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.wrap { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--pad); }
+
+/* ---- ラベル/メタ（等幅・大文字） ---- */
+.mono { font-family: var(--font-mono); letter-spacing: 0.05em; }
+.label { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.neon { color: var(--neon); }
+.muted { color: var(--muted); }
+
+/* ---- 巨大ディスプレイ見出し ---- */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  font-size: clamp(3.5rem, 11vw, 11rem);
+}
+.display--md { font-size: clamp(3rem, 8vw, 8rem); }
+
+/* ---- 区切り線 ---- */
+.rule { border: none; border-top: 2px solid var(--border); }
+.rule--neon { border-top: 2px solid var(--neon); }
+
+/* ---- ネオン下線リンク ---- */
+.link-underline { position: relative; }
+.link-underline::after {
+  content: ''; position: absolute; left: 0; bottom: -3px; width: 100%; height: 2px;
+  background: var(--neon); transform: scaleX(0); transform-origin: left; transition: transform .28s ease;
+}
+.link-underline:hover::after { transform: scaleX(1); }
+
+/* ---- マーキー（横スクロール帯） ---- */
+.marquee { overflow: hidden; border-top: 2px solid var(--neon); border-bottom: 2px solid var(--border); }
+.marquee__track { display: inline-flex; white-space: nowrap; padding: 18px 0; animation: marquee 28s linear infinite; }
+.marquee__track span { font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.08em; color: var(--muted); padding-inline: 1.2rem; }
+.marquee__track span .star { color: var(--neon); }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track { animation: none; }
+  html { scroll-behavior: auto; }
+}

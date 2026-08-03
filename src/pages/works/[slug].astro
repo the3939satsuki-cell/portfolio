@@ -1,0 +1,76 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const works = (await getCollection('works')).sort((a, b) => {
+    if (a.data.order !== b.data.order) return a.data.order - b.data.order;
+    return b.data.date.valueOf() - a.data.date.valueOf();
+  });
+  return works.map((entry, i) => {
+    const next = works[(i + 1) % works.length];
+    return { params: { slug: entry.id }, props: { entry, next } };
+  });
+}
+
+const { entry, next } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const dateStr = d.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long' });
+---
+<Base title={`${d.title} — GOTO SATSUKI`} description={d.summary}>
+  <article>
+    <header class="wrap head">
+      <a class="label link-underline back" href="/works">← WORKS</a>
+      <h1 class="display display--md title">{d.title}</h1>
+      <div class="meta">
+        <span class="label"><span class="neon">CATEGORY</span> / {d.category}</span>
+        <span class="label"><span class="neon">DATE</span> / {dateStr}</span>
+        {d.tags.length > 0 && (
+          <span class="label"><span class="neon">TAGS</span> / {d.tags.join(', ')}</span>
+        )}
+      </div>
+    </header>
+
+    <div class="wrap">
+      <div class="media">
+        {d.video
+          ? <div class="video"><iframe src={d.video} title={d.title} allowfullscreen loading="lazy"></iframe></div>
+          : d.cover
+            ? <img src={d.cover} alt={d.title} />
+            : <span class="ph mono">NO IMAGE — /public/works/ に画像を置いてください</span>}
+      </div>
+
+      {d.summary && <p class="lead">{d.summary}</p>}
+
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+
+    <a class="wrap next" href={`/works/${next.id}`}>
+      <span class="label">NEXT PROJECT</span>
+      <span class="next__title display display--md">{next.data.title} <span class="neon">↗</span></span>
+    </a>
+  </article>
+</Base>
+
+<style>
+  .head { padding-block: 48px 32px; }
+  .back { display: inline-block; margin-bottom: 40px; }
+  .title { margin: 0 0 24px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 28px; padding-top: 24px; border-top: 2px solid var(--border); }
+  .media { margin: 40px 0; background: var(--surface); border: 1px solid var(--border); aspect-ratio: 16 / 9; display: grid; place-items: center; overflow: hidden; }
+  .media img { width: 100%; height: 100%; object-fit: cover; }
+  .video { width: 100%; height: 100%; }
+  .video iframe { width: 100%; height: 100%; border: 0; }
+  .ph { color: #3a3a3a; font-size: 13px; letter-spacing: 0.15em; text-align: center; padding: 0 24px; }
+  .lead { font-size: 20px; line-height: 1.6; max-width: 760px; margin: 0 0 32px; color: #d8d8d8; }
+  .prose { max-width: 760px; line-height: 1.8; color: #cfcfcf; padding-bottom: 80px; }
+  .prose :global(h2) { font-family: var(--font-mono); font-size: 20px; margin: 40px 0 12px; color: var(--white); }
+  .prose :global(p) { margin: 0 0 20px; }
+  .prose :global(a) { color: var(--neon); }
+  .next { display: block; padding: 56px 0; border-top: 2px solid var(--border); }
+  .next__title { margin-top: 12px; }
+  .next:hover .neon { display: inline-block; transform: translate(6px, -6px); transition: transform .25s; }
+</style>
