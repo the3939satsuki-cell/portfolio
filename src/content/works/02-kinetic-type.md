@@ -3,7 +3,7 @@ title: 風
 date: 2026-08-01
 category: movie
 tags: [タイポグラフィ, 映像]
-summary: 
+summary: ３年次社会デザインゼミ課題
 cover: /works/p2.svg
 gallery:
   - /works/p1.svg
