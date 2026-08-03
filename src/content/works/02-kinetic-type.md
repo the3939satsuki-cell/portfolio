@@ -24,4 +24,4 @@ order: 2
 
 ## 使用ツール
 
-illustrator / Procreate 
+DaVinci Resolve / premiere pro 
