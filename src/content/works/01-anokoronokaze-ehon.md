@@ -4,7 +4,7 @@ date: 2026-08-01
 category: design
 tags: [ブランディング, 風]
 summary: ３年次社会デザインゼミ課題
-cover: /works/キービジュアル.png
+cover: /works/keybijyuaru.png
 gallery:
   - /works/ehon1.jpg
   - /works/ehon2.jpg
