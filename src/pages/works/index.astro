@@ -24,7 +24,7 @@ const categories = ['all', ...CATEGORIES];
           href={`/works/${w.entry.id}`}
           num={w.num}
           name={w.entry.data.title}
-          category={w.entry.data.category}
+          categories={w.entry.data.category}
           cover={w.entry.data.cover}
           grad={w.grad}
         />
@@ -44,8 +44,8 @@ const categories = ['all', ...CATEGORIES];
       buttons.forEach((b) => b.classList.toggle('is-active', b === btn));
       let shown = 0;
       rows.forEach((row) => {
-        const cat = row.querySelector('.work-item__cat')?.textContent?.trim();
-        const match = f === 'all' || cat === f;
+        const cats = (row.dataset.categories || '').split(',');
+        const match = f === 'all' || cats.includes(f as string);
         row.style.display = match ? '' : 'none';
         if (match) shown++;
       });

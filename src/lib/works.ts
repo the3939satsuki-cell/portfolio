@@ -11,6 +11,17 @@ const GRADS = [
 ];
 export const grad = (i: number) => GRADS[i % GRADS.length];
 
+// YouTube/Vimeo のどんなURL形式でも、埋め込み用（embed）URLに変換する。
+// 例: https://youtu.be/ID や https://www.youtube.com/watch?v=ID → https://www.youtube.com/embed/ID
+export function toEmbed(url: string): string {
+  if (!url) return url;
+  const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+  const vim = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vim) return `https://player.vimeo.com/video/${vim[1]}`;
+  return url;
+}
+
 // 作品一覧の絞り込みカテゴリ（'all' はページ側で先頭に追加）。
 // 追加・変更したいときはこの配列を編集してください。各作品の category はここのいずれかにします。
 export const CATEGORIES = ['design', 'movie', 'illustration'];

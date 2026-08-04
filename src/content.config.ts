@@ -8,7 +8,9 @@ const works = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
-    category: z.string(),            // 'design' / 'movie' / 'illustration'（一覧はこの区分で絞り込み。区分は src/lib/works.ts の CATEGORIES で管理）
+    // 単一なら category: design、複数なら category: [design, movie] のように書けます。
+    // 区分の一覧は src/lib/works.ts の CATEGORIES で管理。
+    category: z.union([z.string(), z.array(z.string())]).transform((v) => (Array.isArray(v) ? v : [v])),
     tags: z.array(z.string()).default([]),
     summary: z.string().optional(),  // 一覧・詳細に出る短い説明
     cover: z.string().optional(),    // /public 配下の画像パス 例: '/works/01.jpg'

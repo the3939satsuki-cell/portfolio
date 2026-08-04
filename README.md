@@ -31,7 +31,8 @@ Node.js 18.20 以上（推奨: 20 以上）が必要です。
 ---
 title: 作品タイトル
 date: 2026-08-01
-category: illustration      # design / movie / illustration から選ぶ（タブは src/lib/works.ts の CATEGORIES で管理）
+category: illustration      # design / movie / illustration から選ぶ。複数付けるなら category: [design, movie]
+                            # （タブは src/lib/works.ts の CATEGORIES で管理）
 tags: [キャラデザ, 水彩]
 summary: 一覧と詳細に出る短い説明。
 cover: /works/05.jpg        # public/works/ に画像を置く。無ければ省略でOK

@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { render } from 'astro:content';
-import { getWorks } from '../../lib/works';
+import { getWorks, toEmbed } from '../../lib/works';
 
 export async function getStaticPaths() {
   const works = await getWorks();
@@ -28,7 +28,7 @@ const rest = images.slice(1);
       <span class="label num">{num}</span>
       <h1 class="display display--xl title">{d.title}</h1>
       <div class="meta">
-        <span class="label"><span class="accent">category</span> — {d.category}</span>
+        <span class="label"><span class="accent">category</span> — {d.category.join(' / ')}</span>
         <span class="label"><span class="accent">date</span> — {dateStr}</span>
         {d.tags.length > 0 && <span class="label"><span class="accent">tags</span> — {d.tags.join(', ')}</span>}
       </div>
@@ -36,7 +36,7 @@ const rest = images.slice(1);
 
     <div class="wrap">
       {d.video ? (
-        <div class="media reveal-up"><div class="media__v"><iframe src={d.video} title={d.title} allowfullscreen loading="lazy"></iframe></div></div>
+        <div class="media reveal-up"><div class="media__v"><iframe src={toEmbed(d.video)} title={d.title} allowfullscreen loading="lazy"></iframe></div></div>
       ) : hero ? (
         <button class="media media--btn reveal-up" data-lb="0" aria-label={`${d.title} の画像を拡大`}>
           <img src={hero} alt={d.title} />

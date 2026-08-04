@@ -28,7 +28,7 @@ const list = (featured.length ? featured : works).slice(0, 6);
             href={`/works/${w.entry.id}`}
             num={w.num}
             name={w.entry.data.title}
-            category={w.entry.data.category}
+            categories={w.entry.data.category}
             cover={w.entry.data.cover}
             grad={w.grad}
           />
