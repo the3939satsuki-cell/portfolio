@@ -9,7 +9,7 @@ gallery:
   - /works/p2.svg
   - /works/p3.svg
   - /works/p4.svg
-video:https://youtu.be/Vg1lM55OfMs
+video: https://youtu.be/Vg1lM55OfMs
 featured: true
 order: 2
 ---
