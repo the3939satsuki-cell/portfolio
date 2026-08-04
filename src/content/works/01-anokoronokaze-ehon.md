@@ -12,6 +12,23 @@ gallery:
   - /works/ehon4.jpg
   - /works/ehon5.jpg
   - /works/ehon6.jpg
+  - /works/ehon7.jpg
+  - /works/ehon8.jpg
+  - /works/ehon9.jpg
+  - /works/ehon10.jpg
+  - /works/ehon11.jpg
+  - /works/ehon12.jpg
+  - /works/ehon13.jpg
+  - /works/ehon14.jpg
+  - /works/ehon15.jpg
+  - /works/ehon16.jpg
+  - /works/ehon17.jpg
+  - /works/ehon18.jpg
+  - /works/ehon19.jpg
+  - /works/ehon20.jpg
+  - /works/ehon21.jpg
+  - /works/ehon22.jpg
+  - /works/ehon23.jpg
 featured: true
 order: 1
 ---
