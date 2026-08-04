@@ -1,20 +1,33 @@
 ---
-title: Kinetic Type
-date: 2026-05-02
+title: 風（あのころのかぜ）
+date: 2026-08-01
 category: movie
-tags: [タイポグラフィ, After Effects]
-summary: 文字が動くキネティックタイポグラフィの実験。
-cover: /works/p2.svg
+tags: [ブランディング, 風]
+summary: ３年次社会デザインゼミ課題
+cover: /works/p1.svg
 gallery:
-  - /works/p1.svg
+  - /works/p2.svg
   - /works/p3.svg
-video: https://www.youtube.com/embed/dQw4w9WgXcQ
+  - /works/p4.svg
+video:https://youtu.be/Vg1lM55OfMs
 featured: true
 order: 2
 ---
 
-タイポグラフィをアニメーションさせたモーション作品です。`video` 欄に YouTube / Vimeo の埋め込みURLを入れると、詳細ページに動画が表示されます。
+課題文 ： ’風’をあの手この手で表現してください （映像作品）
 
-## 制作メモ
+風を感じる映像を制作しました。
+本能的に「懐かしい」と感じた場所を撮影しました。
+また、bgmも懐かしさが感じられるよう制作しています。
+## コンセプト
 
-リズムに合わせて文字組みが再構成されるように設計しました。
+’目にしている’けど目を’向けていない’場所。
+懐かしさはそんな場所に宿ります。
+
+日々に宿るどこか懐かしい風
+「あのころのかぜ」
+を感じてみてください。
+
+## 使用ツール
+
+DaVinci Resolve / grage band
