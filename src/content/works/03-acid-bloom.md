@@ -8,6 +8,7 @@ cover: /works/p3.svg
 gallery:
   - /works/p1.svg
   - /works/p4.svg
+video: https://youtu.be/9DoW_Q9NR28 
 featured: true
 order: 3
 ---
