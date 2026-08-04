@@ -6,12 +6,12 @@ tags: [ブランディング, 風]
 summary: ３年次社会デザインゼミ課題
 cover: /works/p1.svg
 gallery:
-  - /works/ehon1.png
-  - /works/ehon2.png
-  - /works/ehon3.png
-  - /works/ehon4.png
-  - /works/ehon5.png
-  - /works/ehon6.png
+  - /works/ehon1.jpg
+  - /works/ehon2.jpg
+  - /works/ehon3.jpg
+  - /works/ehon4.jpg
+  - /works/ehon5.jpg
+  - /works/ehon6.jpg
 featured: true
 order: 1
 ---
