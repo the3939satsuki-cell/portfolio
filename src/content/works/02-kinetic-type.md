@@ -1,9 +1,9 @@
 ---
-title: 風
-date: 2026-08-01
+title: Kinetic Type
+date: 2026-05-02
 category: movie
-tags: [タイポグラフィ, 映像]
-summary: ３年次社会デザインゼミ課題
+tags: [タイポグラフィ, After Effects]
+summary: 文字が動くキネティックタイポグラフィの実験。
 cover: /works/p2.svg
 gallery:
   - /works/p1.svg
@@ -13,15 +13,8 @@ featured: true
 order: 2
 ---
 
-課題文:風をあの手この手で表現しなさい（映像）
-目をむける。
-なんだか、なつかしい。
+タイポグラフィをアニメーションさせたモーション作品です。`video` 欄に YouTube / Vimeo の埋め込みURLを入れると、詳細ページに動画が表示されます。
 
-## コンセプト
+## 制作メモ
 
-目にしているのに、目を「むけていない」風の風景。
-そんな風景に宿る懐かしい風、「あのころのかぜ」を感じてみてください。
-
-## 使用ツール
-
-DaVinci Resolve / premiere pro 
+リズムに合わせて文字組みが再構成されるように設計しました。
