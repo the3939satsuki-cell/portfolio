@@ -6,8 +6,8 @@ tags: [インタラクションデザイン, 空間設計]
 summary: ３年次社会デザインゼミ課題
 cover: /works/taiken1.png
 gallery:
-  - /works/p1.svg
-  - /works/p4.svg
+  - /works/taiken4.png
+  - /works/taiken2.PNG
 video: https://youtu.be/9DoW_Q9NR28 
 featured: true
 order: 3
