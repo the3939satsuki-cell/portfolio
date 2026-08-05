@@ -4,7 +4,7 @@ date: 2026-08-01
 category: design
 tags: [インタラクションデザイン, 空間設計]
 summary: ３年次社会デザインゼミ課題
-cover: /works/p3.svg
+cover: /works/taiken1.png
 gallery:
   - /works/p1.svg
   - /works/p4.svg
