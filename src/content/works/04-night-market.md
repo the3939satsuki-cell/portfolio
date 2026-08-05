@@ -4,10 +4,14 @@ date: 2025-12-16
 category: design
 tags: [パッケージデザイン, ぬれせん]
 summary: 2年３D造形演習　「包むこと、包まれること」
-cover: /works/p3.svg
+cover: /works/nuresen1.PNG
 gallery:
-  - /works/p1.svg
-  - /works/p4.svg
+  - /works/nuresen2.PNG
+  - /works/nuresen3.PNG
+  - /works/nuresen4.PNG
+  - /works/nuresen5.PNG
+  - /works/nuresen6.PNG
+  - /works/nuresen7.PNG
 featured: true
 order: 4
 ---
