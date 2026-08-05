@@ -4,7 +4,7 @@ date: 2026-08-01
 category: movie
 tags: [ブランディング, 風]
 summary: ３年次社会デザインゼミ課題
-cover: /works/p1.svg
+cover: /works/kaze-eizo1.png
 gallery:
   - /works/kaze-eizo1.png
   - /works/kaze-eizo2.png
