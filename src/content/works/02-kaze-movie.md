@@ -6,9 +6,12 @@ tags: [ブランディング, 風]
 summary: ３年次社会デザインゼミ課題
 cover: /works/p1.svg
 gallery:
-  - /works/p2.svg
-  - /works/p3.svg
-  - /works/p4.svg
+  - /works/kaze-eizo1.png
+  - /works/kaze-eizo2.png
+  - /works/kaze-eizo3.png
+  - /works/kaze-eizo4.png
+  - /works/kaze-eizo5.png
+  - /works/kaze-eizo6.png
 video: https://www.youtube.com/embed/Vg1lM55OfMs
 featured: true
 order: 2
