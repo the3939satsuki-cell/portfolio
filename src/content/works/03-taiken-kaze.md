@@ -8,7 +8,7 @@ cover: /works/taiken1.png
 gallery:
   - /works/taiken4.png
   - /works/taiken2.PNG
-video: https://youtu.be/9DoW_Q9NR28 
+video: https://www.youtube.com/embed/9DoW_Q9NR28
 featured: true
 order: 3
 ---

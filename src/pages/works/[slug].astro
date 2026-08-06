@@ -17,9 +17,12 @@ const d = entry.data;
 const dateStr = d.date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long' });
 
 // カバー＋ギャラリーをまとめた画像リスト（ライトボックス用）
-const images = [d.cover, ...d.gallery].filter(Boolean) as string[];
+const images = [...new Set([d.cover, ...d.gallery].filter(Boolean))] as string[];
 const hero = images[0];
-const rest = images.slice(1);
+// 動画があるときはカバーも含めた全画像を、無いときは先頭(カバー)以外をギャラリーに並べる
+const galleryItems = d.video
+  ? images.map((src, i) => ({ src, idx: i }))
+  : images.slice(1).map((src, i) => ({ src, idx: i + 1 }));
 ---
 <Base title={`${d.title} — GOTO SATSUKI`} description={d.summary}>
   <article>
@@ -45,11 +48,11 @@ const rest = images.slice(1);
         <div class="media reveal-up"><span class="media__ph label">no image — /public/works/ に画像を置いてください</span></div>
       )}
 
-      {rest.length > 0 && (
+      {galleryItems.length > 0 && (
         <div class="gallery">
-          {rest.map((src, i) => (
-            <button class="gallery__item reveal-up" data-lb={i + 1} aria-label={`${d.title} の画像 ${i + 2} を拡大`}>
-              <img src={src} alt={`${d.title} ${i + 2}`} loading="lazy" />
+          {galleryItems.map((it) => (
+            <button class="gallery__item reveal-up" data-lb={it.idx} aria-label={`${d.title} の画像 ${it.idx + 1} を拡大`}>
+              <img src={it.src} alt={`${d.title} ${it.idx + 1}`} loading="lazy" />
             </button>
           ))}
         </div>
