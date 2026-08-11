@@ -40,6 +40,7 @@ gallery:                    # 詳細ページに複数枚並べたいとき（�
   - /works/05-a.jpg
   - /works/05-b.jpg
 video: https://www.youtube.com/embed/xxxx   # 動画作品のときだけ
+pdf: /works/xxxx.pdf        # 詳細ページにPDFを埋め込みたいとき（public/works/ に置く）
 featured: true              # トップの代表作に出すなら true
 order: 5                    # 並び順（小さいほど先。同じなら日付順）
 ---

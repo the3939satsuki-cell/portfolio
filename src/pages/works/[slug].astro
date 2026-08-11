@@ -58,6 +58,13 @@ const galleryItems = d.video
         </div>
       )}
 
+      {d.pdf && (
+        <div class="pdf reveal-up">
+          <iframe class="pdf__frame" src={d.pdf} title={`${d.title} PDF`} loading="lazy"></iframe>
+          <a class="pdf__link label ul" href={d.pdf} target="_blank" rel="noopener">PDFを開く ↗</a>
+        </div>
+      )}
+
       {d.summary && <p class="lead sum reveal-up">{d.summary}</p>}
       <div class="prose reveal-up"><Content /></div>
     </div>
@@ -99,6 +106,10 @@ const galleryItems = d.video
   .gallery__item { padding: 0; border: none; cursor: pointer; background: var(--ink); border-radius: 4px; overflow: hidden; aspect-ratio: 4/3; }
   .gallery__item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
   .gallery__item:hover img { transform: scale(1.05); }
+
+  .pdf { margin: 8px 0 44px; }
+  .pdf__frame { width: 100%; height: 80vh; border: 1px solid var(--line); border-radius: 4px; background: var(--bg-soft, #e6e3da); }
+  .pdf__link { display: inline-block; margin-top: 14px; }
 
   .sum { max-width: 40ch; margin: 0 auto 36px; font-size: 18px; color: var(--ink); }
   .prose { max-width: 62ch; margin-inline: auto; color: #33322d; font-size: 17px; line-height: 1.9; padding-bottom: 40px; }
