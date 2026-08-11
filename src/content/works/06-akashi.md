@@ -1,6 +1,6 @@
 ---
 title: あかし
-date: 202５-06-10
+date: 2025-06-10
 category: design
 tags: [タイポグラフィ, フォントデザイン]
 summary: 2年次文字表現演習課題
