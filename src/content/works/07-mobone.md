@@ -4,11 +4,12 @@ date: 2025-06-15
 category: design
 tags: [バリアブルフォント, フォントデザイン]
 summary: 2年次文字表現演習課題
-cover: /works/mobone3.pdf
+cover: /works/mobone1.png
 gallery:
   - /works/mobone1.png
   - /works/mobone2.png
 video: https://youtu.be/Zy6kO6oJ_fs
+pdf:  /works/mobone3.pdf
 order: 7
 ---
 
