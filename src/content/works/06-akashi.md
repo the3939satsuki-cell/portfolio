@@ -9,7 +9,6 @@ gallery:
   - /works/akashi2.jpg
   - /works/akashi1.JPG
   - /works/akashi3.jpg
-  
 featured: true
 pdf: /works/akashi46.pdf
 order: 6
