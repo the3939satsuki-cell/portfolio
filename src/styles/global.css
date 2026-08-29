@@ -33,6 +33,9 @@ body {
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 
+/* 背景の砂アニメーション（コンテンツより後ろ） */
+.sand { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+
 .wrap { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--pad); }
 
 /* ---- ラベル（等幅・トラッキング） ---- */

@@ -39,6 +39,7 @@ const allImages = Array.from(new Set([...workImages, ...staticImages]));
     </script>
   </head>
   <body>
+    <canvas id="sand" class="sand" aria-hidden="true"></canvas>
     <div id="preloader" class="preloader" role="status" aria-label="読み込み中" data-images={JSON.stringify(allImages)}>
       <svg class="preloader__goosvg" aria-hidden="true"><defs>
         <filter id="goo">
@@ -111,6 +112,50 @@ const allImages = Array.from(new Set([...workImages, ...staticImages]));
         window.addEventListener('scroll', onScroll, { passive: true });
       }
 
+      // ===== 背景にゆったり流れる砂のアニメーション =====
+      (function () {
+        const sand = document.getElementById('sand') as HTMLCanvasElement | null;
+        if (!sand) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const ctx = sand.getContext('2d');
+        if (!ctx) return;
+        const DPR = Math.min(window.devicePixelRatio || 1, 2);
+        let W = 0, H = 0;
+        let grains: { x: number; y: number; r: number; vx: number; vy: number; a: number }[] = [];
+        const build = () => {
+          W = sand.width = Math.floor(innerWidth * DPR);
+          H = sand.height = Math.floor(innerHeight * DPR);
+          sand.style.width = innerWidth + 'px';
+          sand.style.height = innerHeight + 'px';
+          const n = innerWidth < 640 ? 130 : 260;
+          grains = [];
+          for (let i = 0; i < n; i++) {
+            grains.push({
+              x: Math.random() * W, y: Math.random() * H,
+              r: (Math.random() * 1.1 + 0.3) * DPR,
+              vx: (Math.random() * 0.22 + 0.08) * DPR,
+              vy: (Math.random() * 0.12 - 0.06) * DPR,
+              a: Math.random() * 0.1 + 0.05,
+            });
+          }
+        };
+        build();
+        let rt: number | undefined;
+        window.addEventListener('resize', () => { clearTimeout(rt); rt = window.setTimeout(build, 200); });
+        const draw = () => {
+          ctx.clearRect(0, 0, W, H);
+          for (const g of grains) {
+            g.x += g.vx; g.y += g.vy;
+            if (g.x > W + 2) g.x = -2; else if (g.x < -2) g.x = W + 2;
+            if (g.y > H + 2) g.y = -2; else if (g.y < -2) g.y = H + 2;
+            ctx.fillStyle = 'rgba(120,110,90,' + g.a + ')';
+            ctx.beginPath(); ctx.arc(g.x, g.y, g.r, 0, Math.PI * 2); ctx.fill();
+          }
+          requestAnimationFrame(draw);
+        };
+        draw();
+      })();
+
       const fine = window.matchMedia('(pointer:fine)').matches;
       const revealImg = document.getElementById('revealImg') as HTMLElement;
       const revealNum = document.getElementById('revealNum') as HTMLElement;
@@ -123,19 +168,25 @@ const allImages = Array.from(new Set([...workImages, ...staticImages]));
 
       window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
 
+      // ホバーを少し留めたときだけ画像を出す（素早い通過ではガタつかせない）
+      let hoverTimer: number | undefined;
       document.querySelectorAll<HTMLElement>('.work-item').forEach((it) => {
         it.addEventListener('mouseenter', () => {
-          const cover = it.dataset.cover;
-          revealImg.style.background = cover
-            ? `#111 url("${cover}") center/cover`
-            : (it.dataset.grad || '#111');
-          revealNum.textContent = it.dataset.num || '';
-          revealNum.style.display = cover ? 'none' : 'grid';
-          revealImg.classList.add('show');
           cursor.classList.add('big');
           cursorTxt.style.opacity = '1';
+          clearTimeout(hoverTimer);
+          hoverTimer = window.setTimeout(() => {
+            const cover = it.dataset.cover;
+            revealImg.style.background = cover
+              ? `#111 url("${cover}") center/cover`
+              : (it.dataset.grad || '#111');
+            revealNum.textContent = it.dataset.num || '';
+            revealNum.style.display = cover ? 'none' : 'grid';
+            revealImg.classList.add('show');
+          }, 150);
         });
         it.addEventListener('mouseleave', () => {
+          clearTimeout(hoverTimer);
           revealImg.classList.remove('show');
           cursor.classList.remove('big');
           cursorTxt.style.opacity = '0';
