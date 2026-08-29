@@ -1,6 +1,7 @@
 ---
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
 import '../styles/global.css';
 
 interface Props {
@@ -11,6 +12,12 @@ const {
   title = 'GOTO SATSUKI — Portfolio',
   description = 'Visual artist — illustration & motion. 後藤颯希のポートフォリオ。',
 } = Astro.props;
+
+// サイト内すべての画像パスを集めて、ローディング中にまとめて先読みする
+const works = await getCollection('works');
+const workImages = works.flatMap((w) => [w.data.cover, ...w.data.gallery].filter(Boolean));
+const staticImages = ['/logo.svg', '/mark.svg', '/ptofile.jpg', '/favicon.svg'];
+const allImages = Array.from(new Set([...workImages, ...staticImages]));
 ---
 <!doctype html>
 <html lang="ja">
@@ -26,17 +33,32 @@ const {
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <script is:inline>
+      // 初回アクセス時のみローディングを表示（同じタブ内の2回目以降は出さない）
+      try { if (sessionStorage.getItem('preloaded') === '1') document.documentElement.classList.add('no-preload'); } catch (e) {}
+    </script>
   </head>
   <body>
-    <div id="preloader" class="preloader" role="status" aria-label="読み込み中">
+    <div id="preloader" class="preloader" role="status" aria-label="読み込み中" data-images={JSON.stringify(allImages)}>
+      <svg class="preloader__goosvg" aria-hidden="true"><defs>
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9" result="goo" />
+          <feBlend in="SourceGraphic" in2="goo" />
+        </filter>
+      </defs></svg>
+      <div class="preloader__blobs" aria-hidden="true">
+        <span class="blob blob--1"></span>
+        <span class="blob blob--2"></span>
+        <span class="blob blob--3"></span>
+        <span class="blob blob--4"></span>
+      </div>
       <div class="preloader__inner">
-        <div class="preloader__num" aria-hidden="true">
-          <span class="preloader__num-base" id="preNumBase">0</span>
-          <span class="preloader__num-fill" id="preNumFill">0</span>
-        </div>
         <div class="preloader__label">Satsuki Goto</div>
+        <div class="preloader__num"><span id="preNum">0</span><span class="preloader__pct">%</span></div>
       </div>
     </div>
+
     <Nav />
     <main>
       <slot />
@@ -48,47 +70,46 @@ const {
     <div class="cursor-txt" id="cursorTxt">view</div>
 
     <script>
-      // ===== プリローダー：数字が下から満ちていくローディング画面 =====
+      // ===== プリローダー：全画像を先読みしながら流体アニメを表示（初回のみ） =====
       (function () {
         const pre = document.getElementById('preloader');
-        if (pre) {
-          const numBase = document.getElementById('preNumBase');
-          const numFill = document.getElementById('preNumFill');
-          const imgs = Array.from(document.querySelectorAll('img')).filter((i) => i.loading !== 'lazy');
-          const total = imgs.length;
-          let loaded = 0;
-          let done = false;
-          let shown = 0;
-          const setPct = (pct: number) => {
-            if (numBase) numBase.textContent = String(pct);
-            if (numFill) { numFill.textContent = String(pct); numFill.style.clipPath = `inset(${100 - pct}% 0 0 0)`; }
-          };
-          const target = () => (total === 0 ? 100 : Math.round((loaded / total) * 100));
-          const finish = () => {
-            if (done) return;
-            done = true;
-            setTimeout(() => { pre.classList.add('hide'); document.body.classList.remove('is-loading'); }, 550);
-          };
-          document.body.classList.add('is-loading');
-          const tick = () => {
-            const t = done ? 100 : target();
-            if (shown < t) shown = Math.min(t, shown + Math.max(1, Math.ceil((t - shown) / 6)));
-            setPct(shown);
-            if (!(done && shown >= 100)) requestAnimationFrame(tick);
-          };
-          tick();
-          imgs.forEach((img) => {
-            if (img.complete) { loaded++; }
-            else {
-              img.addEventListener('load', () => { loaded++; if (loaded >= total) finish(); }, { once: true });
-              img.addEventListener('error', () => { loaded++; if (loaded >= total) finish(); }, { once: true });
-            }
-          });
-          if (loaded >= total) finish();
-          window.addEventListener('load', finish);
-          setTimeout(finish, 6000);
-        }
+        if (!pre) return;
+        if (document.documentElement.classList.contains('no-preload')) { pre.remove(); return; }
+        const numEl = document.getElementById('preNum');
+        let assets: string[] = [];
+        try { assets = JSON.parse(pre.dataset.images || '[]'); } catch (e) { assets = []; }
+        const total = assets.length;
+        let loaded = 0;
+        let done = false;
+        let shown = 0;
+        const target = () => (total === 0 ? 100 : Math.round((loaded / total) * 100));
+        const finish = () => {
+          if (done) return;
+          done = true;
+          try { sessionStorage.setItem('preloaded', '1'); } catch (e) {}
+          setTimeout(() => { pre.classList.add('hide'); document.body.classList.remove('is-loading'); }, 500);
+        };
+        document.body.classList.add('is-loading');
+        const tick = () => {
+          const t = done ? 100 : Math.max(shown, target());
+          if (shown < t) shown = Math.min(t, shown + Math.max(1, Math.ceil((t - shown) / 8)));
+          if (numEl) numEl.textContent = String(shown);
+          if (!(done && shown >= 100)) requestAnimationFrame(tick);
+        };
+        tick();
+        const one = () => { loaded++; if (loaded >= total) finish(); };
+        if (total === 0) finish();
+        assets.forEach((src) => { const im = new Image(); im.onload = one; im.onerror = one; im.src = src; });
+        setTimeout(finish, 25000); // 長くなってもここで必ず終了
       })();
+
+      // ===== スクロールでナビにすりガラス背景を出す =====
+      const navEl = document.querySelector('.nav');
+      if (navEl) {
+        const onScroll = () => navEl.classList.toggle('is-scrolled', window.scrollY > 24);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
 
       const fine = window.matchMedia('(pointer:fine)').matches;
       const revealImg = document.getElementById('revealImg') as HTMLElement;
@@ -102,7 +123,6 @@ const {
 
       window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
 
-      // 作品ホバーで画像が現れ、カーソルに追従
       document.querySelectorAll<HTMLElement>('.work-item').forEach((it) => {
         it.addEventListener('mouseenter', () => {
           const cover = it.dataset.cover;
@@ -122,7 +142,6 @@ const {
         });
       });
 
-      // マグネティック
       document.querySelectorAll<HTMLElement>('[data-mag]').forEach((el) => {
         el.addEventListener('mousemove', (e) => {
           const r = el.getBoundingClientRect();
@@ -133,7 +152,6 @@ const {
         el.addEventListener('mouseleave', () => { el.style.transform = ''; });
       });
 
-      // スクロールで立ち上がる
       const io = new IntersectionObserver((entries) => {
         entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
       }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });

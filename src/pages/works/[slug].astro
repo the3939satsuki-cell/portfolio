@@ -142,8 +142,8 @@ const galleryItems = d.video
     const counter = document.getElementById('lbCount') as HTMLElement;
     let idx = 0;
     const update = () => { lbImg.src = imgs[idx]; counter.textContent = `${idx + 1} / ${imgs.length}`; };
-    const open = (i: number) => { idx = i; update(); lb.classList.add('open'); document.body.style.overflow = 'hidden'; };
-    const close = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
+    const open = (i: number) => { idx = i; update(); lb.classList.add('open'); document.body.classList.add('lb-open'); document.body.style.overflow = 'hidden'; };
+    const close = () => { lb.classList.remove('open'); document.body.classList.remove('lb-open'); document.body.style.overflow = ''; };
     const next = () => { idx = (idx + 1) % imgs.length; update(); };
     const prev = () => { idx = (idx - 1 + imgs.length) % imgs.length; update(); };
 

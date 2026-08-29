@@ -22,14 +22,21 @@ const logoSrc = '/logo.svg';
 <style>
   .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 30; color: var(--ink); }
   .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 76px; }
-  .nav__brand { display: inline-flex; align-items: center; }
+  .nav__brand { display: inline-flex; align-items: center; padding: 6px 12px; margin-left: -12px; border-radius: 12px; transition: background .35s var(--ease), backdrop-filter .35s var(--ease); }
   .nav__logo { height: 60px; width: auto; display: block; }
-  .nav__links { display: flex; gap: 30px; }
+  .nav__links { display: flex; align-items: center; gap: 30px; padding: 10px 18px; margin-right: -18px; border-radius: 12px; transition: background .35s var(--ease), backdrop-filter .35s var(--ease); }
   .nav__links a { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); transition: color .3s var(--ease); }
   .nav__links a:hover { color: var(--ink); }
+  /* スクロール時：ロゴ／メニューの背後だけすりガラスにして常に読めるようにする */
+  .nav.is-scrolled .nav__brand,
+  .nav.is-scrolled .nav__links {
+    background: rgba(243, 241, 234, 0.55);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    backdrop-filter: blur(14px) saturate(1.4);
+  }
   @media (max-width: 640px) {
     .nav__logo { height: 45px; }
-    .nav__links { gap: 16px; }
+    .nav__links { gap: 14px; padding: 8px 12px; margin-right: -12px; }
     .nav__links a { font-size: 11px; }
   }
 </style>
