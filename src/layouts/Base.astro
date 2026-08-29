@@ -28,6 +28,15 @@ const {
     />
   </head>
   <body>
+    <div id="preloader" class="preloader" role="status" aria-label="読み込み中">
+      <div class="preloader__inner">
+        <div class="preloader__num" aria-hidden="true">
+          <span class="preloader__num-base" id="preNumBase">0</span>
+          <span class="preloader__num-fill" id="preNumFill">0</span>
+        </div>
+        <div class="preloader__label">Satsuki Goto</div>
+      </div>
+    </div>
     <Nav />
     <main>
       <slot />
@@ -39,6 +48,48 @@ const {
     <div class="cursor-txt" id="cursorTxt">view</div>
 
     <script>
+      // ===== プリローダー：数字が下から満ちていくローディング画面 =====
+      (function () {
+        const pre = document.getElementById('preloader');
+        if (pre) {
+          const numBase = document.getElementById('preNumBase');
+          const numFill = document.getElementById('preNumFill');
+          const imgs = Array.from(document.querySelectorAll('img')).filter((i) => i.loading !== 'lazy');
+          const total = imgs.length;
+          let loaded = 0;
+          let done = false;
+          let shown = 0;
+          const setPct = (pct: number) => {
+            if (numBase) numBase.textContent = String(pct);
+            if (numFill) { numFill.textContent = String(pct); numFill.style.clipPath = `inset(${100 - pct}% 0 0 0)`; }
+          };
+          const target = () => (total === 0 ? 100 : Math.round((loaded / total) * 100));
+          const finish = () => {
+            if (done) return;
+            done = true;
+            setTimeout(() => { pre.classList.add('hide'); document.body.classList.remove('is-loading'); }, 550);
+          };
+          document.body.classList.add('is-loading');
+          const tick = () => {
+            const t = done ? 100 : target();
+            if (shown < t) shown = Math.min(t, shown + Math.max(1, Math.ceil((t - shown) / 6)));
+            setPct(shown);
+            if (!(done && shown >= 100)) requestAnimationFrame(tick);
+          };
+          tick();
+          imgs.forEach((img) => {
+            if (img.complete) { loaded++; }
+            else {
+              img.addEventListener('load', () => { loaded++; if (loaded >= total) finish(); }, { once: true });
+              img.addEventListener('error', () => { loaded++; if (loaded >= total) finish(); }, { once: true });
+            }
+          });
+          if (loaded >= total) finish();
+          window.addEventListener('load', finish);
+          setTimeout(finish, 6000);
+        }
+      })();
+
       const fine = window.matchMedia('(pointer:fine)').matches;
       const revealImg = document.getElementById('revealImg') as HTMLElement;
       const revealNum = document.getElementById('revealNum') as HTMLElement;

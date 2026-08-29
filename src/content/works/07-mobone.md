@@ -9,7 +9,8 @@ gallery:
   - /works/mobone1.png
   - /works/mobone3.png
 video: https://youtu.be/Zy6kO6oJ_fs
-pdf:  /works/mobone2.pdf
+pdf: /works/mobone2.pdf
+featured: true
 order: 7
 ---
 

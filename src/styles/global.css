@@ -107,6 +107,20 @@ img { display: block; max-width: 100%; }
 
 [data-mag] { display: inline-block; will-change: transform; }
 
+/* ---- プリローダー（数字が下から満ちる読み込み画面） ---- */
+body.is-loading { overflow: hidden; }
+.preloader { position: fixed; inset: 0; z-index: 9999; background: var(--paper); display: flex; align-items: center; justify-content: center; transition: transform .85s cubic-bezier(.76, 0, .24, 1); }
+.preloader.hide { transform: translateY(-100%); }
+.preloader__inner { text-align: center; }
+.preloader__num { position: relative; display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: clamp(5rem, 22vw, 15rem); line-height: 0.9; letter-spacing: -0.05em; }
+.preloader__num-base { color: #d8d4c9; }
+.preloader__num-fill { position: absolute; left: 0; top: 0; color: var(--accent); clip-path: inset(100% 0 0 0); transition: clip-path .3s var(--ease); }
+.preloader__label { margin-top: 10px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) {
+  .preloader { transition: opacity .4s ease; }
+  .preloader.hide { transform: none; opacity: 0; visibility: hidden; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .marquee__t { animation: none; }
