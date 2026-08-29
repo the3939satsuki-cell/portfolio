@@ -127,15 +127,15 @@ const allImages = Array.from(new Set([...workImages, ...staticImages]));
           H = sand.height = Math.floor(innerHeight * DPR);
           sand.style.width = innerWidth + 'px';
           sand.style.height = innerHeight + 'px';
-          const n = innerWidth < 640 ? 130 : 260;
+          const n = innerWidth < 640 ? 170 : 340;
           grains = [];
           for (let i = 0; i < n; i++) {
             grains.push({
               x: Math.random() * W, y: Math.random() * H,
-              r: (Math.random() * 1.1 + 0.3) * DPR,
-              vx: (Math.random() * 0.22 + 0.08) * DPR,
-              vy: (Math.random() * 0.12 - 0.06) * DPR,
-              a: Math.random() * 0.1 + 0.05,
+              r: (Math.random() * 1.8 + 0.7) * DPR,
+              vx: (Math.random() * 0.3 + 0.1) * DPR,
+              vy: (Math.random() * 0.14 - 0.07) * DPR,
+              a: Math.random() * 0.3 + 0.2,
             });
           }
         };
@@ -148,7 +148,7 @@ const allImages = Array.from(new Set([...workImages, ...staticImages]));
             g.x += g.vx; g.y += g.vy;
             if (g.x > W + 2) g.x = -2; else if (g.x < -2) g.x = W + 2;
             if (g.y > H + 2) g.y = -2; else if (g.y < -2) g.y = H + 2;
-            ctx.fillStyle = 'rgba(120,110,90,' + g.a + ')';
+            ctx.fillStyle = 'rgba(92,80,56,' + g.a + ')';
             ctx.beginPath(); ctx.arc(g.x, g.y, g.r, 0, Math.PI * 2); ctx.fill();
           }
           requestAnimationFrame(draw);
