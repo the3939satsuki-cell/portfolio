@@ -1,6 +1,6 @@
 ---
 title: hokkaido travel log
-date: 2025-08-20
+date: 2026-08-20
 category: movie
 tags: [映像制作, Vlog]
 summary: 自主制作映像
